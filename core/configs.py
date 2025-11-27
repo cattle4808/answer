@@ -14,6 +14,10 @@ class Settings(BaseSettings):
 
     OPENAI_API_KEY: str
 
+    MIN_SCRIPT_NAME_LENGTH: int = 3
+    MAX_SCRIPT_NAME_LENGTH: int = 5
+    IF_SCRIPT_NAME_EXISTS: int = 10
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
