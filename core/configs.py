@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     MAX_SCRIPT_NAME_LENGTH: int = 5
     IF_SCRIPT_NAME_EXISTS: int = 10
 
+    ANSWER_PATH: str = "./answers"
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

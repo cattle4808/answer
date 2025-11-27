@@ -38,7 +38,7 @@ class Answer(BaseModel):
     id = fields.IntField(primary_key=True)
     script = fields.ForeignKeyField("models.Script", related_name="answers")
 
-    answer = ...
+    answer_path = fields.TextField()
     output = fields.TextField(null=True)
 
     def __str__(self):
