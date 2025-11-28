@@ -212,3 +212,5 @@ __marimo__/
 .idea/
 .idea
 
+/db.sqlite3-shm
+/db.sqlite3-wal

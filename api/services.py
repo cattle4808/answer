@@ -32,8 +32,8 @@ async def generate_name() -> Optional[str]:
     return None
 
 
-async def generate_script() -> Optional[models.Script]:
-    name = await generate_name()
+async def generate_script(name: str = None) -> Optional[models.Script]:
+    name = name or await generate_name()
     if not name:
         return None
 

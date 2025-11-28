@@ -20,6 +20,8 @@ class Settings(BaseSettings):
 
     ANSWER_PATH: str = "./answers"
 
+    AUTH_TOKENS: list = ["abc"]
+
     def model_post_init(self, __context):
         self.DATABASE_URL = (
             f"postgres://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"

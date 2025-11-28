@@ -5,7 +5,7 @@ TORTOISE_ORM = {
     "connections": {"default": "sqlite://db.sqlite3"},
     "apps": {
         "models": {
-            "models": ["v1.models"],
+            "models": ["api.models"],
             "default_connection": "default",
         },
     },
@@ -16,5 +16,5 @@ async def init():
     await Tortoise.generate_schemas()
     await Tortoise.close_connections()
 
-if __name__ == "__main__":
-    asyncio.run(init())
+async def close():
+    await Tortoise.close_connections()
