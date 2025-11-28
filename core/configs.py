@@ -16,9 +16,12 @@ class Settings(BaseSettings):
 
     MIN_SCRIPT_NAME_LENGTH: int = 3
     MAX_SCRIPT_NAME_LENGTH: int = 5
+    REPEAT_SCRIPT_NAME_GENERATE = 3
     IF_SCRIPT_NAME_EXISTS: int = 10
+    NAME_CHOICES: str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0987654321"
 
     ANSWER_PATH: str = "./answers"
+
 
     class Config:
         env_file = ".env"
