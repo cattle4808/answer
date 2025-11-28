@@ -21,22 +21,22 @@ async def create_script():
     return await services.generate_script()
 
 @router.patch("/{name}/change_status", response_model=schemas.Script_Pydantic)
-async def change_script_status(name: str, status: models.ScriptStatus):
-    script = await crud.get_script_by_name(name)
+async def change_script_status(params=Depends(schemas.ChangeScriptStatusSchema)):
+    script = await crud.get_script_by_name(params.name)
     if not script:
         return Response(status_code=500)
-    return await crud.change_status(script, status)
+    return await crud.change_status(script, params.status)
 
 @router.patch("/{name}/change_first_seen", response_model=schemas.Script_Pydantic)
-async def change_script_first_seen(name: str, first_seen: datetime):
-    script = await crud.get_script_by_name(name)
+async def change_script_first_seen(params=Depends(schemas.ChangeScriptFirstSeenSchema)):
+    script = await crud.get_script_by_name(params.name)
     if not script:
         return Response(status_code=500)
-    return await crud.change_first_seen(script, first_seen)
+    return await crud.change_first_seen(script, params.first_seen)
 
 @router.patch("/{name}/change_fingerprint", response_model=schemas.Script_Pydantic)
-async def change_script_fingerprint(name: str, fingerprint: str):
-    script = await crud.get_script_by_name(name)
+async def change_script_fingerprint(params=Depends(schemas.ChangeScriptFingerprintSchema)):
+    script = await crud.get_script_by_name(params.name)
     if not script:
         return Response(status_code=500)
-    return await crud.change_fingerprint(script, fingerprint)
+    return await crud.change_fingerprint(script, params.fingerprint)
