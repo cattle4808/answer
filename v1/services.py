@@ -1,3 +1,5 @@
+import copy
+
 from . import models
 from . import crud
 from core.configs import settings
@@ -14,11 +16,14 @@ async def generate_name() -> Optional[str]:
     fallback_len = settings.IF_SCRIPT_NAME_EXISTS
     max_attempts = settings.REPEAT_SCRIPT_NAME_GENERATE
 
+    length = copy.copy(min_len)
+
     for _ in range(max_attempts):
-        length = random.randint(min_len, max_len)
         name = "".join(random.choice(choices) for _ in range(length))
         if await crud.get_script_by_name(name) is None:
             return name
+
+        length += 1
 
     fallback = "".join(random.choice(choices) for _ in range(fallback_len))
     if await crud.get_script_by_name(fallback) is None:
@@ -41,5 +46,3 @@ async def generate_script() -> Optional[models.Script]:
         print("create_script failed:", e)
         return None
 
-
-async def

@@ -7,20 +7,23 @@ class Settings(BaseSettings):
     DB_HOST: str
     DB_PORT: str
     DB_NAME: str
+    DATABASE_URL: str = ""
 
-    DATABASE_URL: str = (
-        f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    )  
 
     OPENAI_API_KEY: str
 
     MIN_SCRIPT_NAME_LENGTH: int = 3
-    MAX_SCRIPT_NAME_LENGTH: int = 5
-    REPEAT_SCRIPT_NAME_GENERATE = 3
+    MAX_SCRIPT_NAME_LENGTH: int = 7
+    REPEAT_SCRIPT_NAME_GENERATE: int = 3
     IF_SCRIPT_NAME_EXISTS: int = 10
     NAME_CHOICES: str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0987654321"
 
     ANSWER_PATH: str = "./answers"
+
+    def model_post_init(self, __context):
+        self.DATABASE_URL = (
+            f"postgres://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
 
 
     class Config:

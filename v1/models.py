@@ -26,7 +26,7 @@ class Script(BaseModel):
         max_length=255,
     )
     fingerprint = fields.CharField(max_length=255, null=True)
-    first_seen = fields.DatetimeField(auto_now_add=True)
+    first_seen = fields.DatetimeField(null=True)
 
     def __str__(self):
         return f"{self.id}:{self.name}"
