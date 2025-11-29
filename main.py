@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 
 from core import db
 from api import router as v1_router
+from app.routers import router as app_router
 
 app = FastAPI()
 
@@ -32,6 +33,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 app.include_router(v1_router)
+app.include_router(app_router)
 
 
 

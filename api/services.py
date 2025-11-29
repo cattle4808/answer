@@ -50,7 +50,6 @@ async def generate_script(name: Optional[str] = None, max_used: int = 50) -> dic
                 break
     return {"ok": False, "error": "name_conflict", "data": None}
 
-
 async def change_status(name: str, status_value: models.ScriptStatus) -> dict:
     script = await crud.get_script_by_name(name)
     if not script:
@@ -58,7 +57,6 @@ async def change_status(name: str, status_value: models.ScriptStatus) -> dict:
     updated = await crud.update_script_fields(script, status=status_value)
     script_p = await Script_Pydantic.from_tortoise_orm(updated)
     return {"ok": True, "error": None, "data": script_p}
-
 
 async def change_first_seen(name: str, first_seen: datetime) -> dict:
     script = await crud.get_script_by_name(name)
@@ -69,7 +67,6 @@ async def change_first_seen(name: str, first_seen: datetime) -> dict:
     updated = await crud.update_script_fields(script, first_seen=first_seen)
     script_p = await Script_Pydantic.from_tortoise_orm(updated)
     return {"ok": True, "error": None, "data": script_p}
-
 
 async def change_fingerprint(name: str, fingerprint: str) -> dict:
     script = await crud.get_script_by_name(name)
