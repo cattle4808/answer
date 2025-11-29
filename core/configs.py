@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     DB_HOST: str
     DB_PORT: str
     DB_NAME: str
-    DATABASE_URL: str = ""
+    DATABASE_URL: str = "qwe"
 
 
     OPENAI_API_KEY: str
@@ -17,10 +17,11 @@ class Settings(BaseSettings):
     REPEAT_SCRIPT_NAME_GENERATE: int = 3
     IF_SCRIPT_NAME_EXISTS: int = 10
     NAME_CHOICES: str = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0987654321"
+    SCRIPT_ACTIVE_TIME_MINUTES: int = 120
 
     ANSWER_PATH: str = "./answers"
 
-    AUTH_TOKENS: list = ["abc"]
+    AUTH_TOKENS: list = ["qwe"]
 
     def model_post_init(self, __context):
         self.DATABASE_URL = (

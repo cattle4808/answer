@@ -1,56 +1,31 @@
+from typing import Optional, Any
 from . import models
-from datetime import datetime
-
 
 
 async def create_script(
-        name: str,
-        status: models.ScriptStatus,
-        fingerprint: str | None = None,
-    ) -> models.Script:
+    name: str,
+    status: models.ScriptStatus,
+    max_used: int = 50
+) -> models.Script:
     return await models.Script.create(
         name=name,
         status=status,
-        fingerprint=fingerprint,
+        max_used=max_used,
     )
 
-async def get_script_by_name(
-        name: str,
-    ) -> models.Script | None:
+async def get_script_by_name(name: str) -> Optional[models.Script]:
     return await models.Script.get_or_none(name=name)
 
-async def change_status(
-    script: models.Script,
-    status: models.ScriptStatus
-) -> models.Script | None:
-    try:
-        await script.update_from_dict({"status": status})
-        await script.save()
-        return script
-    except Exception as e:
-        print("change_script_status failed:", e)
-        return None
+async def update_script_fields(script: models.Script, **fields: Any) -> models.Script:
+    await script.update_from_dict(fields)
+    await script.save()
+    return await models.Script.get(id=script.id)
 
-async def change_first_seen(
-    script: models.Script,
-    first_seen: datetime
-) -> models.Script | None:
-    try:
-        await script.update_from_dict({"first_seen": first_seen})
-        await script.save()
-        return script
-    except Exception as e:
-        print("change_script_first_seen failed:", e)
-        return None
+async def change_status(script: models.Script, status: models.ScriptStatus) -> models.Script:
+    return await update_script_fields(script, status=status)
 
-async def change_fingerprint(
-    script: models.Script,
-    fingerprint: str
-) -> models.Script | None:
-    try:
-        await script.update_from_dict({"fingerprint": fingerprint})
-        await script.save()
-        return script
-    except Exception as e:
-        print("change_script_fingerprint failed:", e)
-        return None
+async def change_first_seen(script: models.Script, first_seen) -> models.Script:
+    return await update_script_fields(script, first_seen=first_seen)
+
+async def change_fingerprint(script: models.Script, fingerprint: str) -> models.Script:
+    return await update_script_fields(script, fingerprint=fingerprint)

@@ -25,8 +25,11 @@ class Script(BaseModel):
         default=ScriptStatus.INACTIVE,
         max_length=255,
     )
-    fingerprint = fields.CharField(max_length=255, null=True)
+
     first_seen = fields.DatetimeField(null=True)
+
+    max_used = fields.IntField(default=50)
+    used = fields.IntField(default=0)
 
     def __str__(self):
         return f"{self.id}:{self.name}"

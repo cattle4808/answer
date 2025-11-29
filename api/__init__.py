@@ -1,42 +1,28 @@
-from fastapi import APIRouter, Depends
-from starlette.responses import Response
-
-from datetime import datetime
-
-from . import models
-from . import crud
-from . import services
-from . import schemas
+from fastapi import APIRouter, Depends, Body
+from . import schemas, services
 from . import middleware
 
-
 router = APIRouter(
-    prefix='/api/scripts',
-   # dependencies=[Depends(middleware.auth_required)]
+    prefix="/api/scripts",
+    # dependencies=[Depends(middleware.auth_required)]
 )
 
+@router.post("/create", response_model=schemas.ScriptResponse, tags=["Main"], description="Create script")
+async def create_script(body: schemas.CreateScriptSchema = Depends()):
+    return await services.generate_script(name=body.name, max_used=body.max_used)
 
-@router.post("/create")
-async def create_script():
-    return await services.generate_script()
+@router.patch("/{name}/change_status", response_model=schemas.ScriptResponse, tags=["Main"], description="Change script status")
+async def change_script_status(name: str, body: schemas.ChangeScriptStatusSchema = Depends()):
+    return await services.change_status(name=name, status_value=body.status)
 
-@router.patch("/{name}/change_status", response_model=schemas.Script_Pydantic)
-async def change_script_status(params=Depends(schemas.ChangeScriptStatusSchema)):
-    script = await crud.get_script_by_name(params.name)
-    if not script:
-        return Response(status_code=500)
-    return await crud.change_status(script, params.status)
+@router.patch("/{name}/change_first_seen", response_model=schemas.ScriptResponse, tags=["Test"], description="Change first_seen")
+async def change_script_first_seen(name: str, body: schemas.ChangeScriptFirstSeenSchema = Depends()):
+    return await services.change_first_seen(name=name, first_seen=body.first_seen)
 
-@router.patch("/{name}/change_first_seen", response_model=schemas.Script_Pydantic)
-async def change_script_first_seen(params=Depends(schemas.ChangeScriptFirstSeenSchema)):
-    script = await crud.get_script_by_name(params.name)
-    if not script:
-        return Response(status_code=500)
-    return await crud.change_first_seen(script, params.first_seen)
+@router.patch("/{name}/change_fingerprint", response_model=schemas.ScriptResponse, tags=["Test"], description="Change fingerprint")
+async def change_script_fingerprint(name: str, body: schemas.ChangeScriptFingerprintSchema = Depends()):
+    return await services.change_fingerprint(name=name, fingerprint=body.fingerprint)
 
-@router.patch("/{name}/change_fingerprint", response_model=schemas.Script_Pydantic)
-async def change_script_fingerprint(params=Depends(schemas.ChangeScriptFingerprintSchema)):
-    script = await crud.get_script_by_name(params.name)
-    if not script:
-        return Response(status_code=500)
-    return await crud.change_fingerprint(script, params.fingerprint)
+@router.get("/{name}/get", response_model=schemas.ScriptResponse, tags=["Main"], description="Get script")
+async def get_script(name: str):
+    return await services.get_script_by_name(name=name)
