@@ -12,7 +12,7 @@ from . import BASE_SCRIPT
 router = APIRouter()
 
 
-@router.get("/script/{name}")
+@router.get("/script/{name}", description="Get script, for front (import script)", tags=["Frontend"])
 async def get_script_js(name: str):
     script = await crud.get_script_by_name(name)
 
